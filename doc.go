@@ -1,5 +1,5 @@
-// Package hivehook is the official Go client for Hivehook, the self-hostable
-// webhook gateway.
+// Package hivehook is the official Go client for Hivehook, webhook
+// infrastructure for modern teams (inbound and outbound).
 //
 // Construct a client with [New] and an [Option] for the base URL and API key:
 //
