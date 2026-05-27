@@ -6,7 +6,7 @@ import (
 )
 
 // Version is the SDK semver string sent in the User-Agent header.
-const Version = "0.1.0"
+const Version = "0.1.1"
 
 // userAgent is the User-Agent header value used on every outbound request.
 const userAgent = "hivehook-sdk-go/" + Version
