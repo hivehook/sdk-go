@@ -2,6 +2,8 @@
 
 Official Go client for [Hivehook](https://hivehook.com), webhook infrastructure for modern teams (inbound and outbound).
 
+Latest release: **0.1.1** on [pkg.go.dev](https://pkg.go.dev/github.com/hivehook/sdk-go).
+
 ## Install
 
 ```bash
