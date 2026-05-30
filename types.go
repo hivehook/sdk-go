@@ -599,6 +599,29 @@ type StreamSink struct {
 	CreatedAt      time.Time      `json:"createdAt"`
 }
 
+// StreamEntry is a single message persisted in a Stream's log.
+type StreamEntry struct {
+	ID        string    `json:"id"`
+	StreamID  string    `json:"streamId"`
+	Sequence  int       `json:"sequence"`
+	MessageID *string   `json:"messageId"`
+	EventType string    `json:"eventType"`
+	Payload   []byte    `json:"payload"`
+	CreatedAt time.Time `json:"createdAt"`
+}
+
+// MetaEventConfig describes a webhook that receives meta-events (events about
+// events, e.g. delivery.failed, source.created) emitted by Hivehook itself.
+type MetaEventConfig struct {
+	ID            string    `json:"id"`
+	Name          string    `json:"name"`
+	URL           string    `json:"url"`
+	SigningSecret string    `json:"signingSecret"`
+	EventTypes    []string  `json:"eventTypes"`
+	Enabled       bool      `json:"enabled"`
+	CreatedAt     time.Time `json:"createdAt"`
+}
+
 // OTLPConfig holds OpenTelemetry exporter settings for an Organization.
 type OTLPConfig struct {
 	Endpoint   string         `json:"endpoint"`

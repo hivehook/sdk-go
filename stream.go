@@ -133,3 +133,43 @@ func (s *StreamService) Update(ctx context.Context, id string, input *UpdateStre
 func (s *StreamService) Delete(ctx context.Context, id string) error {
 	return s.gql.do(ctx, deleteStreamMutation, map[string]any{"id": id}, nil)
 }
+
+const streamEntryFragment = `
+	id streamId sequence messageId eventType payload createdAt
+`
+
+const listStreamEntriesQuery = `query($streamId: UUID!, $afterSequence: Int, $limit: Int) {
+	streamEntries(streamId: $streamId, afterSequence: $afterSequence, limit: $limit) {
+		nodes {` + streamEntryFragment + `}
+		pageInfo { total limit offset endCursor hasNextPage }
+	}
+}`
+
+// ListStreamEntriesOptions filters StreamService.Entries results.
+type ListStreamEntriesOptions struct {
+	AfterSequence *int
+	Limit         *int
+}
+
+// Entries returns persisted entries from a Stream, ordered by sequence.
+func (s *StreamService) Entries(ctx context.Context, streamID string, opts *ListStreamEntriesOptions) ([]*StreamEntry, *PageInfo, error) {
+	vars := map[string]any{"streamId": streamID}
+	if opts != nil {
+		if opts.AfterSequence != nil {
+			vars["afterSequence"] = *opts.AfterSequence
+		}
+		if opts.Limit != nil {
+			vars["limit"] = *opts.Limit
+		}
+	}
+	var result struct {
+		StreamEntries struct {
+			Nodes    []*StreamEntry `json:"nodes"`
+			PageInfo PageInfo       `json:"pageInfo"`
+		} `json:"streamEntries"`
+	}
+	if err := s.gql.do(ctx, listStreamEntriesQuery, vars, &result); err != nil {
+		return nil, nil, err
+	}
+	return result.StreamEntries.Nodes, &result.StreamEntries.PageInfo, nil
+}

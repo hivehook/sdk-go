@@ -67,6 +67,8 @@ type Client struct {
 	Users *UserService
 	// AuditLogs queries the audit log.
 	AuditLogs *AuditLogService
+	// MetaEventConfigs manages meta-event webhook configurations.
+	MetaEventConfigs *MetaEventConfigService
 }
 
 // Option configures a Client passed to New.
@@ -154,6 +156,7 @@ func New(opts ...Option) *Client {
 	c.Organizations = &OrganizationService{gql: gql}
 	c.Users = &UserService{gql: gql}
 	c.AuditLogs = &AuditLogService{gql: gql}
+	c.MetaEventConfigs = &MetaEventConfigService{gql: gql}
 
 	return c
 }
